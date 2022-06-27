@@ -16,13 +16,15 @@ import test_transactions from '/tst/TestTransactions.js';
  * @return Transaction Object
  */
 
-const createTransaction = (_transactionId, _clientId, _date, _price, _amount) => {
+const createTransaction = (_transactionId, _clientId, _gallonsRequested, _address, _date, _price) => {
     return {
         transactionId : _transactionId,
         clientId : _clientId,
+        gallonsRequested: _gallonsRequested,
+        address: _address,
         date: _date,
         price: _price,
-        amount: _amount
+        amount: _price * _gallonsRequested
     }
 }
 
@@ -45,9 +47,11 @@ const ShowTransactions = (Transactions) =>{
         div.innerHTML = `
             <p class="transaction-id">Transaction Id: ${transaction.transactionId}</p>
             <p class="client-id">Client Id : ${transaction.clientId}</p>
+            <p class="client-id">Gallons Requested : ${transaction.gallonsRequested}</p>
+            <p class="client-id">Delivery Address : ${transaction.address}</p>
             <p class="date">Date: ${transaction.date}</p>
             <p class="price">Price: ${transaction.price}</p>
-            <p class="amount">Amount: ${transaction.amount}</p>
+            <p class="amount">Amount: ${transaction.price * transaction.gallonsRequested}</p>
         `;
 
         wrapper.append(div);
