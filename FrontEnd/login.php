@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
+    <title>FuelMe Login</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="images/homePage.css">
+    <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
 
-<img src="img_la.jpg" alt="LA" style="width:100%">
+<img src="images/img_la.jpg" alt="LA" style="width:100%">
 
 <div class="">
 

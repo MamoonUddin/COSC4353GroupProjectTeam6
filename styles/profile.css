@@ -1,3 +1,37 @@
+html:root{
+  --shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.199);
+  --lighter: #d4d09e;
+  --light: #c7c061;
+  --mid: #bdb76b;
+  --main: #4b5320;
+  --accent: #b8bc86;
+  --dark: #a0a55d;
+  --darker: #bdb76b; 
+}
+
+body{
+  background-color: var(--main);
+}
+
+h1{
+  color: white;
+  text-align: center;
+}
+
+.container{
+  background-color: var(--dark);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 20px;
+}
+
+form{
+  background-color: var(--lighter);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 20px;
+}
+
 /* Style inputs */
 input[type=text], select {
     width: 100%;
