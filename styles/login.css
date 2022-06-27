@@ -1,5 +1,17 @@
+body{
+  background-color: #d4d09e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 form {
-    border: 3px solid #f1f1f1;
+    /* border: 3px solid #f1f1f1; */
+    border-radius: 20px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
   }
   
   /* Full-width inputs */
@@ -39,23 +51,43 @@ form {
   .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
+    
   }
   
+
+  .login-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-container{
+    
+    width: 35vw;
+  }
+  
+
   /* Avatar image */
   img.avatar {
-    width: 40%;
+    /* width: 40%; */
+    /* border-radius: 100%; */
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
+    overflow: hidden;
+    background-color: blue;
   }
   
   /* Add padding to containers */
   .container {
     padding: 16px;
+    border-radius: 20px;
   }
   
   /* The "Forgot password" text */
   span.psw {
     float: right;
     padding-top: 16px;
+    padding-left: 10px;
   }
   
   /* Change styles for span and cancel button on extra small screens */
