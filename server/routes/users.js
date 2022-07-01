@@ -2,7 +2,7 @@ const express = require("express");
 const usersRouter = express.Router();
 
 /**For testing */
-const users = require("../tst/users")
+const users = require("../tst/users.json").users
 /**End For Testing */
 
 usersRouter.get("/", (req, res) => {
@@ -15,7 +15,7 @@ usersRouter.get("/", (req, res) => {
 
 usersRouter.get("/:userId", (req, res) => {
     const user = users.find((obj)=>{
-        return obj.userId == req.params.userId;
+        return obj.userId.toLowerCase() == req.params.userId.toLowerCase();
     });
     res.json(user)
 });
