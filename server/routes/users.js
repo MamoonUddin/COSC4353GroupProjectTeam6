@@ -20,4 +20,11 @@ usersRouter.get("/:userId", (req, res) => {
     res.json(user)
 });
 
+/**For dealing with user transactions */
+const transactionsRouter = require("./transactions");
+usersRouter.use("/:userId/transactions", (req, res, next) => {
+    req.userId = req.params.userId;
+    next();
+}, transactionsRouter);
+
 module.exports = usersRouter;
