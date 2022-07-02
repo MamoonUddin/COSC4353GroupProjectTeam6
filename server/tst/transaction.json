@@ -1,0 +1,26 @@
+{
+    "transactions": [
+        {
+            "transactionId": 1,
+            "clientId": 1,
+            "gallonsRequested": 10,
+            "deliveryAddress": "4800 Calhoun Rd, Houston, TX 77004",
+            "deliveryDate": "May 1, 2022",
+            "suggestedPrice": 2.3
+        },{
+            "transactionId": 2,
+            "clientId": 1,
+            "gallonsRequested": 10,
+            "deliveryAddress": "4800 Calhoun Rd, Houston, TX 77004",
+            "deliveryDate": "March 1, 2022",
+            "suggestedPrice": 3.6
+        },{
+            "transactionId": 3,
+            "clientId": 1,
+            "gallonsRequested": 4,
+            "deliveryAddress": "4800 Calhoun Rd, Houston, TX 77004",
+            "deliveryDate": "May 12, 2022",
+            "suggestedPrice": 2.3
+        }
+    ]
+}
