@@ -1,6 +1,9 @@
 # FuelMe Server
 
 ---
+### Install Dependencies
+Ensure that you have node installed on your machine. 
+Navigate to the server directory and run `npm install` to install dependencies
 
 ### To run the server: 
 run `npm start` in the terminal    
