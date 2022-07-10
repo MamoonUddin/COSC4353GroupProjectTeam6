@@ -1,0 +1,32 @@
+<!-- Idea For History Page:
+    API Request: Get_Transactions, 
+    API Response: List of transactions Objects
+
+    Use js to generate divs for transactions
+    we can do pagination later ?
+-->
+
+<!-- 
+    Transaction Class:
+    -Int: ClientID
+    -Date: Transaction Date
+    -Int: Price
+    -Int: Amount
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/history.css">
+    <title>Transaction History</title>
+</head>
+<body>
+    <h1>Transaction History</h1>
+    <div class="transactions-wrapper" id="transactions-wrapper">
+    </div>
+    <script type="module" src="scripts/ShowTransactions.js"></script>
+</body>
+</html>
