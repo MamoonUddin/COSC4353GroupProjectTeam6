@@ -22,6 +22,17 @@ const path = require('path');
 var bodyParser = require('body-parser')
 require("dotenv").config()
 
+// DB logic
+const mysql = require('mysql');
+var connected = false ;
+const dbService = require('./dbService');
+const { connect } = require("http2");
+const connection = mysql.createConnection({
+    host : 'localhost',
+    user : 'root',
+    password: '' 
+});
+
 /**Constants and Env Variables */
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -45,6 +56,18 @@ app.use("/api", api);
 
 app.get("/", (req, res) => {
     console.log("home");
+    if (connected == false ){
+        let sql = "CREATE DATABASE gas_sale_app";
+        connection.query(sql, (err) => {
+           if(err){
+            console.log("DB exists");
+           }else{
+            dbService.createDataBase();
+            console.log("DB didnt exist");
+           } 
+        });
+        connected = true;
+    }
     res.render('index');
 });
 app.get("/api", (req, res) => {
