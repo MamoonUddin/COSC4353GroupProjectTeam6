@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/login.css">
+  <title>Request Fuel Quote</title>
+  
+</head>
+<body>
+<form action="/profile" method="post">
+    <div class="container">
+        <table id="table">
+            <thead>
+                <th> order ID</th>
+                <th> User Email</th>
+                <th> Gallons</th>
+                <th> Price</th>
+                <th> State To </th>
+            </thead>
+            <tbody></tbody>
+    </table>
+    </div>
+        <div class="clearfix">
+        <a href ="/">Cancel</a>
+        </div>
+</form>
+  
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('http://localhost:3000/getAll')
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+        
+    });
+
+    function loadHTMLTable(data) {
+        const table = document.querySelector('table tbody');
+    
+        if (data.length === 0) {
+            table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
+            return;
+        }
+    
+        let tableHtml = "";
+    
+        data.forEach(function ({transactionID , userID, gallons, price,sentTo}) {
+            tableHtml += "<tr>";
+            tableHtml += `<td>${transactionID }</td>`;
+            tableHtml += `<td>${userID}</td>`;
+            tableHtml += `<td>${gallons}</td>`;
+            tableHtml += `<td>${price}</td>`;
+            tableHtml += `<td>${sentTo}</td>`;
+            tableHtml += "</tr>";
+        });
+    
+        table.innerHTML = tableHtml;
+    }
+
+    loadHTMLTable()
+</script>

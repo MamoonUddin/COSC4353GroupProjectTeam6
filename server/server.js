@@ -3,40 +3,29 @@
 // next you will do "npm install"
 // and finally "npm start"
 
-// everything is hooked up by these ejs files which are basically derieved from the orignal HTML files.
-// most changes are done just have to apply some buisness logic maybe make pricing a new page doo the calculations
-// that could be done with render and urlencodedParser in the server.js file doing some math in between request and doing a approve 
-// option which we dont wory until DB phase.
-// onkly 1 account works   
-// username : john
-// password : 123 
-// idk how the testing is gonna work. 
-
-
-// i put this in server.js in the top. i also branched of server change branch cause it wasnt merged to main.
-
-
 const express = require("express");
+const mysql = require('mysql');
 const api = require("./routes/api");
 const path = require('path');
 var bodyParser = require('body-parser')
 require("dotenv").config()
 
-// DB logic
-const mysql = require('mysql');
-var connected = false ;
-const dbService = require('./dbService');
-const { connect } = require("http2");
-const connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password: '' 
-});
+var connected = false;
+var logedIn = {
+    status : false,
+    userID  : ""  
+};
 
 /**Constants and Env Variables */
+
 const PORT = process.env.PORT || 3000;
 const app = express();
+const dbService = require('./DBService');
+const { connect } = require("http2");
+const { render } = require("ejs");
+const DBService = require("./DBService");
 
+// idk what this doing
 var jsonParser = bodyParser.json()
 app.set('view engine', 'ejs');
 
@@ -54,65 +43,103 @@ app.use(express.static("public"));
 /**Routing */
 app.use("/api", api);
 
+app.listen(PORT, ()=>{
+    console.log(`Listening on PORT ${PORT}`);
+});
+
 app.get("/", (req, res) => {
     console.log("home");
-    if (connected == false ){
-        let sql = "CREATE DATABASE gas_sale_app";
-        connection.query(sql, (err) => {
-           if(err){
-            console.log("DB exists");
-           }else{
-            dbService.createDataBase();
-            console.log("DB didnt exist");
-           } 
-        });
+    if (connected == false) {
+        dbService.createDataBase();
         connected = true;
-    }
+    };
+    console.log(connected);
     res.render('index');
 });
+
 app.get("/api", (req, res) => {
     console.log("home");
     res.render('index');
 });
 
-app.get("/login", (req,res)=>{
-    console.log("login page");
-
-    res.render('login');
+app.post("/login", (req,res)=>{
+    if (logedIn.status == true){
+        res.redirect("/profile");
+    }else {
+        res.render("login");
+    }
 });
 
 app.get("/register", (req,res)=>{
-    console.log("register page");
-    // adding DB logic to add to databse 
     res.render('register');
 });
 
-app.get("/profile", urlencodedParser, (req,res)=>{
+app.get("/profile", urlencodedParser, async  (req,res)=>{
     console.log("register page");
-    console.log(req.body);
-    res.render('profile');
+    try {
+        let result = await dbService.getUserByEmail(logedIn.userID);
+        res.render('profile', result[0]);
+        
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
 });
 
-app.post("/registerAttempt", urlencodedParser , (req,res)=> {
+app.post("/profileUpdate", urlencodedParser, async  (req,res)=>{
+    console.log("updating profile page");
+    try {
+        console.log(req.body)
+        dbService.updateClient(logedIn.userID, req.body.firstname, req.body.lastname,req.body.address1,req.body.city,req.body.state,req.body.zip)
+        res.redirect("/profile");
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+    
+});
+
+app.post("/registerAttempt", urlencodedParser , async (req,res)=> {
+    try {
+        let result = await dbService.getUserByEmail(req.body.username);
+        if (req.body.psw === req.body.pswRepeat && req.body.username.includes('@') && result.length == 0 ){
+            dbService.insertUserByRegister(req.body.username,req.body.psw);
+            res.render("login");
+        }
+        res.render('register');
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
     console.log('attempting to signup');
     // adding DB logic to add to databse 
-    console.log(req.body);
-    res.render('login');
+    
 });
 
-app.post("/loginAttempt", urlencodedParser , (req,res)=> {
-    console.log('attempting to log in');
-    // add DB logic to compare later but for now it should be 
-    // username : john
-    // password : 123
-    console.log(req.body);
-    if (req.body.uname == "john" && req.body.psw == "123") {
-        res.render('profile');
-      } else {
-        res.render('loginFail');
-      }
-
-    
+app.post("/loginAttempt", urlencodedParser ,async (req,res)=> {
+    try {
+        if (logedIn.status == false){
+            console.log(req.body);
+            let hashpass = await dbService.getHashPassByEmail(req.body.uname);
+            console.log(hashpass);
+            let result = await dbService.comparePassForLogIn(req.body.psw,hashpass.password);
+            console.log(result);
+            if (result){
+                logedIn.status = true;
+                logedIn.userID = req.body.uname;
+                res.redirect('/profile');
+            }else{
+                res.render('loginFail')
+            }
+           
+        }else{
+            res.redirect('profile');
+        }
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+    console.log(logedIn);
 });
 
 app.get("/request", (req,res)=>{
@@ -120,6 +147,91 @@ app.get("/request", (req,res)=>{
     res.render('request');
 });
 
-app.listen(PORT, ()=>{
-    console.log(`Listening on PORT ${PORT}`);
+
+app.get("/logout", (req,res) => {
+    logedIn.status =false;
+    logedIn.userID = '' ;
+    res.redirect("/");
+});
+
+app.post("/pricing", urlencodedParser , async (req,res) => {
+    try{
+        console.log(req.body);
+        let result = await dbService.getAmount(req.body.stateTo);
+        let mergedResult = {...result[0], ...req.body};
+        console.log(mergedResult);
+        res.render("confrimReq", mergedResult);
+    }catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+app.post("/confirm", urlencodedParser , async (req,res) => {
+    try{
+        let email = logedIn.userID;
+        let gal = parseFloat(req.body.gallons);
+        let cost = parseFloat(req.body.price);
+        let sendLocation = req.body.state;
+        dbService.insertTransaction(email, gal,cost,sendLocation);
+        res.redirect("/profile");
+    }catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+app.get("/history", urlencodedParser, async (req,res) => {
+    try{
+        // let result = await dbService.getHistory(logedIn.userID);
+        // let tableHtml = "";
+
+        // result.forEach(function({transactionID,userID,gallons,price,sentTo}){
+        //     tableHtml += "<tr>";
+        //     tableHtml += `<td>${transactionID}</td>`;
+        //     tableHtml += `<td>${userID}</td>`;
+        //     tableHtml += `<td>${gallons}</td>`;
+        //     tableHtml += `<td>${price}</td>`;
+        //     tableHtml += `<td>${sentTo}</td>`;
+        //     tableHtml += "</tr>";
+        // });
+
+        // console.log(tableHtml);
+        // let final = {innerhtml : tableHtml};
+        // res.render("transactionHistory",final)
+        res.render("transactionHistory");
+    }catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+app.get('/getAll', (request, response) => {
+
+    const result = dbService.getHistory(logedIn.userID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+})
+
+app.post("/forgetAttempt", urlencodedParser , async (req,res)=> {
+    try {
+        let result = await dbService.getUserByEmail(req.body.username);
+        if (req.body.psw === req.body.pswRepeat && req.body.username.includes('@') && result.length != 0 ){
+            dbService.updateUserByRegister(req.body.username,req.body.psw);
+            res.render("login");
+        }
+        res.render('forgPass');
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+    console.log('attempting to signup');
+    // adding DB logic to add to databse 
+    
+});
+
+app.get("/forget", (req,res) => {
+    res.render("forgPass");
 });
