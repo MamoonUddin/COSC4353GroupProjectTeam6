@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/login.css">
+  <title>Request Fuel Quote</title>
+</head>
+<body>
+  <form action="/confirm" method="post">
+    <div class="container">
+        <label for="gallons"> Gallons </label>
+      <input type="int" id="gallons" name="gallons" value= <%=  requestedGallons %>  readonly>
+    </div>
+    <div class="container">
+      <label for="pricePerGallon">price per gallon </label>
+      <input type="text" id="pricePerGallon" name="price_gallon" value=<%= pricePerGallon %> readonly>
+    </div>
+    <div class="container">
+      <label for="price">price </label>
+        <input type="text" id="price" name="price" value=<%= pricePerGallon*requestedGallons %> readonly>
+    </div>
+    <div class="container">
+      <label for="state"> state </label>
+        <input type="text" id="state" name="state" value=<%= stateTo %> readonly>
+    </div>
+    <div class="clearfix">
+      <a href ="/profile">Cancel</a>
+      <button type="submit" class="signupbtn"> Confrim</button>
+    </div>
+  </form>
+</body>
+</html>
