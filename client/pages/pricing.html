@@ -1,0 +1,54 @@
+<!doctype HTML>
+<html lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/profile.css">
+<title>
+
+</title>
+<head>
+
+</head>
+<body>
+<h1>Pricing For Oil *PLACEHOLDER*</h1>
+    <form role="form" id="price" name="price">
+        <label>Choose Gallons</label>    
+        <select class="" id="itemselect" onchange="calculate()">
+            <option id="itemprice" value="1.500">10 Gallons</option>
+            <option id="itemprice" value="1.250">20 Gallons</option>
+            <option id="itemprice" value="3.000">30 Gallons</option>
+            <option id="itemprice" value="6.000">40 Gallons</option>
+            <option id="itemprice" value="4.000">50 Gallons</option>
+            <option id="itemprice" value="5.000">60 Gallons</option>
+        </select>
+        <p>
+            <label>Pick an amount to purchase</label>
+            <input type="text" id="qty" placeholder="Quantity of oil..." onchange="calculate()" value="">
+        </p>
+        <p>
+            <label>Total Amount in USD</label>
+            <input type="text" id="result" placeholder="Total goes here..." value="" disabled>
+        </p>        
+    </form>
+    
+    <script type="text/javascript">
+        
+        
+        //PLACEHOLDER CODE FOR MATH NOT FINAL WILL BE CHANGED IN THE FINAL STEP TO DISPLAY ACCURATE MATH NECESSARY
+
+        function calculate(price){
+            var item = document.getElementById("itemselect").value || 0;
+
+            var qty = document.getElementById("qty").value || 0;
+            
+            item = parseFloat(item).toFixed(2);
+            qty = parseFloat(qty).toFixed(2);
+            
+            var result = parseFloat(item*qty).toFixed(2);
+                            
+            document.getElementById("result").value=result;
+        }
+    </script>
+</body>
+</html>

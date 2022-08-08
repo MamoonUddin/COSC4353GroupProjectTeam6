@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/register.css">
+    <title>FuelMe Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
+</head>
+<body>
+    <div class="register-wrapper">
+        <form id="form" style="border:1px solid #ccc">
+          <div class="container">
+            <h1>Forget Password </h1>
+            <hr>
+        
+            <label for="username"><b>Email</b></label>
+            <input id="email" type="text" placeholder="Enter Username" name="username" required>
+        
+            <label for="psw"><b>Password</b></label>
+            <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
+        
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input id="psw-repeat" type="password" placeholder="Repeat Password" name="pswRepeat" required>
+        
+        
+            <div class="clearfix">
+              <a href ="./index.html">Cancel</a>
+              <button type="submit" class="signupbtn">Sign Up</button>
+            </div>
+          </div>
+        </form>
+    </div>    
+    <script src="../scripts/forgPass.js" ></script>
+</body>
+</html>
